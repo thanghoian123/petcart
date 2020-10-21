@@ -1,37 +1,81 @@
-import React,{useState,useEffect,useRef} from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../../../../redux/actions/actions';
-import callAPI from '../../../../CallApi';
+import CallAPI from '../../../../CallApi';
+import axios from 'axios';
+import { storage } from '../../../../firebase/index';
 
 
 function OptionForm(props) {
-    const {onAddProduct,currentProd} = props;
-    
+    const { onAddProduct, currentProd } = props;
+    const token = JSON.parse(localStorage.getItem('token')).accessToken || null;
+    const config = {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    }
     const [product, setProduct] = useState({
-        id: '',
+
         title: '',
         price: 0,
         description: '',
         imgUrl: '',
         categoryCode: ''
     });
+
+    const [category, setCategory] = useState([]);
+    const [typeProduct, setTypeProduct] = useState({ code: '', listType: [] });
+
+    useEffect(() => {
+        CallAPI('category/categorys', 'GET', null).then(res => {
+            setCategory(res.data);
+        })
+    }, []);
+
+    useEffect(() => {
+        if (!category) return;
+        const newList = category.filter(item => {
+            return item.code == typeProduct.code
+        })
+        // ;   
+        { newList[0] ? setTypeProduct({ ...typeProduct, listType: newList[0].child }) : console.log(newList[0]); }
+    }, [typeProduct.code]);
     // console.log(product);
-    function onHandleSubmit(e){
+    function onHandleSubmit(e) {
         e.preventDefault();
         const currentP = product;
-        console.log(currentP);
-        if(currentP.id){
-            callAPI(`products/${currentP.id}`, 'PUT', currentP).then(res => {
-                alert('sua thanh cong')
-            })             
-        }else{
-            callAPI('products','POST',product).then(res=>{
-                onAddProduct(product);
-                alert('them thanh cong')
-            })
+
+        if (currentP.id) {
+            if (token) {
+
+                axios.put(`http://localhost:8081/api/product/update/${currentP.id}`, currentP, config).then(res => {
+                    alert("sua thanh cong")
+                }).catch(err => {
+                    if (err) {
+                        alert("sua that bai")
+                    }
+                })
+
+            } else {
+                alert("sua that bai")
+            }
+        } else {
+            if (token) {
+                axios.post(`http://localhost:8081/api/product/create`, currentP, config).then(res => {
+                    alert("them thanh cong")
+                }).catch(err => {
+                    console.log(err);
+                    if (err) {
+                        alert("them that bai")
+                    }
+                })
+
+            } else {
+                alert("them that bai")
+            }
         }
         setProduct({
-            id: '',
+
             title: '',
             price: 0,
             description: '',
@@ -40,22 +84,49 @@ function OptionForm(props) {
         })
     }
 
-    function onHandleChange(e){
+    function onHandleChange(e) {
         const name = e.target.name;
         const value = e.target.value;
-        const newP = {...product,[name]:value};
-        setProduct(newP)        
+        const newP = { ...product, [name]: value };
+        setProduct(newP)
+
     }
 
-    useEffect(() => {        
-        if(!currentProd) return;
-        console.log(currentProd);    
+    function onHandleImgChange(e) {
+        if (e.target.files[0]) {
+            const newP = { ...product, imgUrl: e.target.files[0] }
+            setProduct(newP)
+        }
+
+    }
+
+    const onHandleUpload = () => {
+        const uploadTask = storage.ref(`images/${product.imgUrl.name}`).put(product.imgUrl);
+        uploadTask.on(
+            "state_changed",
+            snapshot => { },
+            err => {
+                console.log(err);
+            },
+            () => {
+                storage.ref("images").child(product.imgUrl.name).getDownloadURL().then(url => {
+                    console.log(url);
+                    setProduct({ ...product, imgUrl: url })
+                })
+            }
+        )
+    }
+
+
+    useEffect(() => {
+        if (!currentProd) return;
+        // console.log(currentProd);
         setProduct(currentProd);
     }, [currentProd]);
 
     return (
-        <div  className="text-center">
-            <div className="box box-primary" style={{width:"60%",margin: "0 auto"}}>
+        <div className="text-center">
+            <div className="box box-primary" style={{ width: "60%", margin: "0 auto" }}>
                 <div className="box-header with-border">
                     <h3 className="box-title">Option</h3>
                 </div>
@@ -65,11 +136,11 @@ function OptionForm(props) {
                     <div className="box-body">
                         <div className="form-group">
                             <label>Name</label>
-                            <input type="text" className="form-control" value={product.title} name="title" placeholder="name" onChange={onHandleChange}/>
+                            <input type="text" className="form-control" value={product.title} name="title" placeholder="name" onChange={onHandleChange} />
                         </div>
                         <div className="form-group">
                             <label >Price</label>
-                            <input type="text" className="form-control" value={product.price} name="price" placeholder="Price" onChange={onHandleChange}/>
+                            <input type="text" className="form-control" value={product.price} name="price" placeholder="Price" onChange={onHandleChange} />
                         </div>
                         <div className="form-group">
                             <label >Description</label>
@@ -78,18 +149,29 @@ function OptionForm(props) {
                         <div className="form-group">
                             <label >Type</label>
 
+                            <select className="form-control form-control-lg" name="categoryCode" onChange={(e) => setTypeProduct({ ...typeProduct, code: e.target.value })}>
+                                <option value=""></option>
+                                {category.map((item, index) => {
+                                    return (
+                                        <option key={index} value={item.code}>{item.name}</option>
+                                    )
+                                })}
+                            </select>
+
                             <select className="form-control form-control-lg" name="categoryCode" onChange={onHandleChange}>
                                 <option value=""></option>
-                                <option value="do-an-cho">Dog food</option>
-                                <option value="do-an-meo">Cat food</option>
-                                <option value="do-choi-cho">Dog toy</option>
-                                <option value="do-choi-meo">Cat toy</option>
+                                {(typeProduct.listType || []).map((item, index) => {
+                                    return (
+                                        <option key={index} value={item.code}>{item.name}</option>
+                                    )
+                                })}
                             </select>
 
                         </div>
                         <div className="form-group">
                             <label >File input</label>
-                            <input type="file" name="imgUrl" onChange={onHandleChange}/>
+                            <input type="file" name="imgUrl" onChange={onHandleImgChange} />
+                            <p onClick={onHandleUpload}>upload</p>
                             <p className="help-block">Example block-level help text here.</p>
                         </div>
 
@@ -122,4 +204,4 @@ var mapDispatchToProps = (dispatch, props) => {
     }
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(OptionForm);
+export default connect(mapStateToProps, mapDispatchToProps)(OptionForm);

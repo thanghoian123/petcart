@@ -1,19 +1,20 @@
-import React,{useEffect,} from 'react';
-import {Link} from 'react-router-dom';
-import {connect} from 'react-redux';
+import React, { useEffect, } from 'react';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 import TypeProduct from './typeproduct';
 import * as actions from '../../../../redux/actions/actions';
 import ListPro from './listproducts';
 import callAPI from '../../../../CallApi';
+import MainHeader from '../../header/mainheader';
 
 function ShopFilterType(props) {
-    const { typeProducts, match, onGetProducts, onGetTypePro, onFilter } = props
+    const { typeProducts, match, onGetProducts, onGetTypePro, onFilter ,onToggle } = props
     useEffect(() => {
-        callAPI('products', 'GET', null).then(res => {
-            onGetProducts((res.data || []).map(item => ({...item})));
-            // onFilter(match.params.type)
+        callAPI('product/products', 'GET', null).then(res => {
+            onGetProducts((res.data || []).map(item => ({ ...item })));
+            onFilter(match.params.type)
         })
-        callAPI('categorys', 'GET', null).then(res => {
+        callAPI('category/categorys', 'GET', null).then(res => {
             onGetTypePro(res.data);
         })
     }, [])
@@ -22,50 +23,55 @@ function ShopFilterType(props) {
         onFilter(match.params.type)
     }, [match])
 
-    const onToggle = (e) => {
-        // console.log('yayaya')
-        this.props.onToggle(e);
+    const onToggleItem = (e) => {
+        if(!e) return ;
+        onToggle(e);       
     }
 
 
     return (
-        <div className="body-content">
-            <div className="container">
-                <div className="row">
-                    <div className="col-sm-12 page-title">
-                        <ol className="breadcrumb bg-none">
-                            <li> <Link to="/">Trang chủ</Link></li>
-                            <li className="active"><Link to="/shop">Cửa hàng</Link></li>
-                        </ol>
-                    </div>
-                </div>
-                <div className="row">
-                    <div className=" col-sm-3 list-product ">
-                        <div className="panel panel-info">
-                            <div className="panel-heading">
-                                <h3 className="panel-title">Danh mục sản phẩm</h3>
-                            </div>
-                            <div className="panel-body">
-                                <ul>
-                                    {(typeProducts || []).map((item, index) => (
-                                        <li id="item" key={index}>
-                                            <h4 data-atr="id1" onClick={() => onToggle(item)}>{item.name}<span className="caret" /></h4>
-                                            <div className="child-item-dropdown" id="id1">
-                                                <TypeProduct
-                                                    child={item.child}
-                                                    isToggle={item.isToggle === "true" ? true : false}
-                                                />
-                                            </div>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
+        <>
+            <MainHeader/>
+            <div className="body-content">
+                <div className="container">
+                    <div className="row">
+                        <div className="col-sm-12 page-title">
+                            <ol className="breadcrumb bg-none">
+                                <li> <Link to="/">Trang chủ</Link></li>
+                                <li className="active"><Link to="/shop">Cửa hàng</Link></li>
+                            </ol>
                         </div>
                     </div>
-                    <ListPro filter={true} />
+                    <div className="row">
+                        <div className=" col-sm-3 list-product ">
+                            <div className="panel panel-info">
+                                <div className="panel-heading">
+                                    <h3 className="panel-title">Danh mục sản phẩm</h3>
+                                </div>
+                                <div className="panel-body">
+                                    <ul>
+                                        {(typeProducts || []).map((item, index) => (
+                                            <li id="item" key={index}>
+                                                <h4 data-atr="id1" onClick={() => onToggleItem(item)}>{item.name}<span className="caret" /></h4>
+                                                <div className="child-item-dropdown" id="id1">
+                                                    <TypeProduct
+                                                        child={item.child}
+                                                        isToggle={(item.isToggle === "true" || item.isToggle === "True") ? true : false}
+                                                    />
+                                                </div>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <ListPro filter={true} />
+                    </div>
                 </div>
             </div>
-        </div>
+        </>
+
+
     );
 }
 

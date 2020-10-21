@@ -7,11 +7,18 @@
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
     "axios": "^0.20.0",
+    "bootstrap": "^4.5.3",
+    "chart.js": "^2.9.3",
+    "firebase": "^7.22.1",
     "react": "^16.13.1",
+    "react-chartjs-2": "^2.10.0",
     "react-dom": "^16.13.1",
     "react-redux": "^7.2.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
+    "react-year-picker": "^0.3.7",
+    "reactjs-popup": "^2.0.4",
+    "reactstrap": "^8.6.0",
     "redux": "^4.0.5"
   },
   "scripts": {

@@ -12,25 +12,30 @@ Store.propTypes = {
 };
 
 function Store(props) {
-    const {onGetProducts,onGetTypePro} = props
+    const {onGetProducts,onGetTypePro,onToggle} = props
     useEffect(() => {
-        callAPI('products', 'GET', null).then(res => {
-            onGetProducts(res.data);
+        callAPI('product/products', 'GET', null).then(res => {
+            onGetProducts((res.data||{}));
         })
-        callAPI('categorys', 'GET', null).then(res => {
-            onGetTypePro(res.data);
+        callAPI('category/categorys', 'GET', null).then(res => {
+            onGetTypePro((res.data||{}));
         })
     }, []);
+
+    const onToggleItem = (item) =>{
+        onToggle(item);
+        
+    }
     var { typeProducts } = props;
         if (typeProducts) {
-            var typePros = (typeProducts).map((item, index) => {
+            var typePros = (typeProducts || {}).map((item, index) => {                
                 return (
                     <li id="item" key={index}>
-                        <h4 data-atr="id1" onClick={() => this.onToggle(item)}>{item.name}<span className="caret" /></h4>
+                        <h4 data-atr="id1" onClick={() => onToggleItem(item)}>{item.name}<span className="caret" /></h4>
                         <div className="child-item-dropdown" id="id1">
                             <TypeProduct
                                 child={item.child}
-                                isToggle={item.isToggle === "true" ? true : false}
+                                isToggle={(item.isToggle === "true" || item.isToggle === "True") ? true : false}
                             />
                         </div>
                     </li>

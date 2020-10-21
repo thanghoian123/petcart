@@ -42,7 +42,7 @@ function Sidebar(props) {
                             </a>
                             <ul className="treeview-menu">
                                 <li><Link to="/addproduct"><i className="fa fa-circle-o" />Add new product</Link></li>
-                                <li className="active"><a href="index2.html"><i className="fa fa-circle-o" />Add new post</a></li>
+                                <li className="active"><Link to="/addpost"><i className="fa fa-circle-o" />Add new post</Link></li>
                             </ul>
                         </li>
                         <li className="treeview">
@@ -77,7 +77,7 @@ function Sidebar(props) {
                                 </span>
                             </a>
                             <ul className="treeview-menu">
-                                <li><a href="pages/charts/chartjs.html"><i className="fa fa-circle-o" /> ChartJS</a></li>
+                                <li><Link to="/chart"><i className="fa fa-circle-o" /> Chart</Link></li>
                                 <li><a href="pages/charts/morris.html"><i className="fa fa-circle-o" /> Morris</a></li>
                                 <li><a href="pages/charts/flot.html"><i className="fa fa-circle-o" /> Flot</a></li>
                                 <li><a href="pages/charts/inline.html"><i className="fa fa-circle-o" /> Inline charts</a></li>

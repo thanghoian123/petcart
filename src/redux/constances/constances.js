@@ -11,7 +11,14 @@ export const TYPE_PRODUCTS ='TYPE_PRODUCTS';
 export const CART_PRODUCTS= 'CART_PRODUCTS';
 export const ADD_TOCART ='ADD_TOCART';
 export const DEL_CART ='DEL_CART';
+export const REMOVE_CARTITEM ='REMOVE_CARTITEM';
 export const FILTER_ITEM ='FILTER_ITEM';
 
 
-export const GET_ACCOUNTS = 'GET_ACCOUNTS';
+export const GET_USER = 'GET_USER';
+export const LOGOUT ='LOGOUT';
+
+export const GET_BILL = 'GET_BILL';
+export const ADD_BILL = 'ADD_BILL';
+export const DEL_BILL = 'DEL_BILL';
+export const UPD_STT = 'UPD_STT';

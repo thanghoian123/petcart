@@ -70,6 +70,10 @@
 
 }
 
+.post-item .post-img img{
+    max-width: 100% !important;
+}
+
 .post-title{
     font-weight: bolder;
     padding: 0 15px;
@@ -93,6 +97,10 @@
 .post-detail{
     padding: 5px;
     border: 2px solid #f1f1f1;
+}
+
+.post-detail img{
+    max-width: 100% !important;
 }
 
 .divider{

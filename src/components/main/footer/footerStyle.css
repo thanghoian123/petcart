@@ -1,0 +1,42 @@
+.fa-facebook{
+    color: black !important;
+}
+
+.bg-footer{
+    background-image: linear-gradient(to bottom right, #808080, #e6e6e6);
+}
+.social-media p{
+    display: inline-block;
+    color: #000;
+    border: black solid 1px;
+    padding: 10px ;
+    border-radius: 10px;
+    transition: 0.6s;
+}
+
+ .social-media #fa:hover{
+    background:linear-gradient(#74b9ff,#0984e3);
+    color: white;
+    transform: scale(1.2);
+}
+
+ .social-media #ins:hover{
+    background:linear-gradient(#e17055,#ff7675);
+    color: white;
+    transform: scale(1.2);
+}
+
+ .social-media #G:hover{
+    background:linear-gradient(#e17055,#00b894);
+    color: white;
+    transform: scale(1.2);
+}
+.font-sm{
+    font-size: 15px;
+    color: white !important;
+}
+
+#contact li{
+    line-height: 3.5rem;
+    font-size: 1.5rem;
+}

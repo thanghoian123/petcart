@@ -1,14 +1,9 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
-// import Header from './header';
-// import Sidebar from './sidebar';
-// import Footer from './content/footer';
-// import Table from './content/table';
-// import OptionForm from './form/productOptionForm';
 import Content from '../content/option/ShowTable';
 import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
-import AddPro from '../content/option/addProduct';
-import UpdPro from '../content/option/updProduct';
+import AddPro from '../content/option/productOption/addProduct';
+import UpdPro from '../content/option/productOption/updProduct';
+
 
 Admin.propTypes = {
 
@@ -19,10 +14,7 @@ function Admin(props) {
         <div>
             <Router>
                 <Switch>
-                    <Route path="/" exact><Content /></Route>
-                    <Route path="/addproduct" exact><AddPro/></Route>
-                    <Route path="/updproduct" exact component={UpdPro}/>
-                    <Route path="/updproduct/:id" exact component={UpdPro}/>
+                    <Route path="/" exact><Content /></Route>                  
                 </Switch>
             </Router>
 

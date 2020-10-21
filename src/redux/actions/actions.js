@@ -64,7 +64,7 @@ export const getTypeProduct = (typePro) =>{
 export const cart_Product = () =>{
     return {
         type : types.CART_PRODUCTS
-    }
+    } 
 }
 
 export const addToCart = (product,quantity)=>{
@@ -82,6 +82,13 @@ export const delCart = (id)=>{
     }
 }
 
+export const removeCartItem = (id)=>{
+    return {
+        type:types.REMOVE_CARTITEM,
+        id: id
+    }
+}
+
 export const filterItem = (typePro)=>{
     return {
         type: types.FILTER_ITEM,
@@ -89,11 +96,47 @@ export const filterItem = (typePro)=>{
     }
 }
 
-
-export const getAccounts = (accounts)=>{
+// -----------------------------------------------//
+export const getUsers = (user)=>{
     return {
-        type: types.GET_ACCOUNTS,
-        accounts: accounts
+        type: types.GET_USER,
+        user: user
+    }
+}
+
+export const logout = ()=>{
+    return {
+        type: types.LOGOUT
+    }
+}
+
+// bill
+
+export const getBill = (bills) =>{
+    return {
+        type : types.GET_BILL,
+        bills : bills
+    }
+}
+
+export const addBill = (bill)=>{
+    return {
+        type: types.ADD_BILL,
+        bill:bill
+    }
+}
+
+export const delBill = (id)=>{
+    return {
+        type: types.DEL_BILL,
+        id:id
+    }
+}
+
+export const updStt = (item) =>{
+    return {
+        type:types.UPD_STT,
+        item:item
     }
 }
 

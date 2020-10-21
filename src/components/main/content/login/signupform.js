@@ -1,14 +1,43 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-
-SignUpForm.propTypes = {
-
-};
+import React, { useEffect, useState } from 'react';
+import callAPI from '../../../../CallApi';
 
 function SignUpForm(props) {
+    const [userSign, setUserSign] = useState({
+        "username": "",
+        "fullname": "",
+        "password": "",
+        "password_confirmation": ""
+    });
+
+    const onHandleChange = (e) => {
+        const name = e.target.name;
+        const value = e.target.value;
+        setUserSign({ ...userSign, [name]: value })
+    }
+
+    const onHandleSubmit = (e) => {
+        e.preventDefault();
+        if (userSign.password != userSign.password_confirmation) {
+            alert('mat khau khong trung');
+            return;
+        }
+        const userClone = {
+            "username": userSign.username,
+            "fullname": userSign.fullname,
+            "password": userSign.password
+        }
+        callAPI('auth/signup', 'POST', userClone).then(res => {
+            alert(res.data.message)
+        })
+        setUserSign({
+            "username": "",
+            "fullname": "",
+            "password": "",
+            "password_confirmation": ""
+        })
+    }
     return (
         <div>
-            
             <h2>sign up</h2>
             <div className="container">
                 <div className="row centered-form">
@@ -18,31 +47,27 @@ function SignUpForm(props) {
                                 <h3 className="panel-title">Please sign up for Bootsnipp <small>It's free!</small></h3>
                             </div>
                             <div className="panel-body">
-                                <form role="form">
+                                <form onSubmit={onHandleSubmit}>
                                     <div className="row">
-                                        <div className="col-xs-6 col-sm-6 col-md-6">
+                                        <div className="col-xs-12 col-sm-12 col-md-12">
                                             <div className="form-group">
-                                                <input type="text" name="first_name" id="first_name" className="form-control input-sm" placeholder="First Name" />
+                                                <input onChange={onHandleChange} type="text" name="fullname" className="form-control input-sm" placeholder="Full name" />
                                             </div>
                                         </div>
-                                        <div className="col-xs-6 col-sm-6 col-md-6">
-                                            <div className="form-group">
-                                                <input type="text" name="last_name" id="last_name" className="form-control input-sm" placeholder="Last Name" />
-                                            </div>
-                                        </div>
+
                                     </div>
                                     <div className="form-group">
-                                        <input type="email" name="email" id="email" className="form-control input-sm" placeholder="Email Address" />
+                                        <input onChange={onHandleChange} type="text" name="username" className="form-control input-sm" placeholder="Username" />
                                     </div>
                                     <div className="row">
                                         <div className="col-xs-6 col-sm-6 col-md-6">
                                             <div className="form-group">
-                                                <input type="password" name="password" id="password" className="form-control input-sm" placeholder="Password" />
+                                                <input onChange={onHandleChange} type="password" name="password" id="password" className="form-control input-sm" placeholder="Password" />
                                             </div>
                                         </div>
                                         <div className="col-xs-6 col-sm-6 col-md-6">
                                             <div className="form-group">
-                                                <input type="password" name="password_confirmation" id="password_confirmation" className="form-control input-sm" placeholder="Confirm Password" />
+                                                <input onChange={onHandleChange} type="password" name="password_confirmation" id="password_confirmation" className="form-control input-sm" placeholder="Confirm Password" />
                                             </div>
                                         </div>
                                     </div>

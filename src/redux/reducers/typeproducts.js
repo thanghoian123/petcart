@@ -24,7 +24,7 @@ var myReducer = (state = typeProducts,action)=>{
         }
         case types.TOGGLE_ITEM:{
             var index = onFindItem(action.item.id,state);
-            var isToggle = state[index].isToggle ==="true" ? "false" : "true";
+            var isToggle = state[index].isToggle === "true" ? "false" : "true";
             state[index]={
                 ...state[index],
                 isToggle: isToggle

@@ -1,12 +1,17 @@
 import React from 'react';
+import Home from '../content/home/home'
 import PropTypes from 'prop-types';
+import MainHeader from  '../header/mainheader'
+import MainFooter from '../footer/mainFooter';
 
 
 
 function HomeP(props) {
     return (
         <div>
-            <h1>Home</h1>
+            <MainHeader/>
+            <Home/>
+            <MainFooter/>
         </div>
     );
 }

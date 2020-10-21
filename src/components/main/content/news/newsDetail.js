@@ -4,9 +4,15 @@ import CallAPI from '../../../../CallApi';
 import { connect } from 'react-redux';
 import './news.css';
 import * as actions from '../../../../redux/actions/actions';
+import MainHeader from '../../header/mainheader';
 
 function NewsDetail(props) {
-    var { posts } = props;
+    var { posts, onGetPosts } = props;
+    useEffect(() => {
+        CallAPI('news/news', 'GET', null).then(res => {
+            onGetPosts(res.data);
+        })
+    }, []);
     const blogPost = posts.map((item, index) => {
         return (
             <li key={index}>
@@ -23,8 +29,11 @@ function NewsDetail(props) {
         var element = posts.filter((item, index) => {
             return item.id == id
         })
+        console.log(element);
+
         if (element.length > 0) {
             return (
+
                 <div className="post-detail">
                     <h6>Tin tức</h6>
                     <h1>{element[0].title}</h1>
@@ -37,24 +46,25 @@ function NewsDetail(props) {
                     <ul className="social-media">
                         <li>
                             <a href="#" id="fb">
-                                <i className="fab fa-facebook-f" />
+                                <i class="fa fa-facebook" aria-hidden="true"></i>
                                 <span>facebook</span>
                             </a>
                         </li>
                         <li>
                             <a href="#" id="tw">
-                                <i className="fab fa-twitter" />
+                                <i class="fa fa-twitter" aria-hidden="true"></i>
                                 <span>Twitter</span>
                             </a>
                         </li>
                         <li>
                             <a href="#" id="gg">
-                                <i className="fab fa-google" />
+                                <i class="fa fa-google" aria-hidden="true"></i>
                                 <span>Google</span>
                             </a>
                         </li>
                     </ul>
                 </div>
+
             )
         } else {
             return (
@@ -65,6 +75,8 @@ function NewsDetail(props) {
     var postDetail = onRenderPostDetail();
 
     return (
+        <>
+        <MainHeader/>
         <div className="post-news-mast">
             <div className="container">
                 <div className="row">
@@ -82,6 +94,7 @@ function NewsDetail(props) {
                 </div>
             </div>
         </div>
+        </>
     );
 }
 

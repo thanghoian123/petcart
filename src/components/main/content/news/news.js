@@ -9,7 +9,7 @@ import * as actions from '../../../../redux/actions/actions'
 function News(props) {
     var { posts, onGetPosts } = props;
     useEffect(() => {
-        CallAPI('news','GET',null).then(res=>{
+        CallAPI('news/news','GET',null).then(res=>{
             onGetPosts(res.data);
         })
     }, []);

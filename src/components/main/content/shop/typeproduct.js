@@ -6,7 +6,7 @@ import * as actions from '../../../../redux/actions/actions';
 
 function TypeProduct(props) {
     var { child, isToggle } = props;
-    // console.log(isToggle)
+    // console.log('child' , child)
     var ele = child.map((item, index) => {
         return (
             <Link key={index} to={`/shop/type/${item.code}`} >

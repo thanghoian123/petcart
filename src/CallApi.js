@@ -10,3 +10,5 @@ export default function callAPI(endPoint,method,data){
         console.log(err)
     })
 }
+
+
